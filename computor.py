@@ -11,8 +11,8 @@ import math
 if len(sys.argv) > 1:
     input_data = sys.argv[1]
 else:
-    exit
-
+    exit()
+# utils.roundS(0.545547775)
 # initializing an array where the reduced data will be   
 # the form: coefficient[power]
 reduced_array = []
