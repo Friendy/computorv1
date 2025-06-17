@@ -1,34 +1,17 @@
-import math, time
+from operations import pow2, square_root, round6
+import time
 
-def printk():
-	print('k')
-
-# def round6(n):
-# 	# s = 
-# 	return int(n*1000000) / 1000000
-
-def round6(n):
-	if n < 0:
-		s = str(-n)
-	else:
-		s = str(n)
-	point = s.rfind(".")
-	digit = int(s[point + 7])
-	s = s[:point + 7]
-	f = float(s)
-	if digit >= 5:
-		f = f + 0.000001
-	if n < 0:
-		f = -f
-	print(f)
-	return f
-
+# adding coefficient to the array
 # appending nulls and the value to the array so that
-def append_ind(arr, ind, last_ind, val):
-	while ind > last_ind + 1:
+def  add_coef(arr, power, val):
+	last_ind = len(arr) - 1
+	while power > last_ind + 1:
 		arr.append(0)
 		last_ind += 1
-	arr.append(val)
+	if power <= last_ind:
+		arr[power] += val
+	else:
+		arr.append(val)
 
 # getting the coefficient of the power given the power index
 def get_coef(input_data, pow_ind):
@@ -45,26 +28,25 @@ def get_coef(input_data, pow_ind):
 
 # because in the reduced array all coefficients are on the left side
 # when we process the right side we multiply it by -1 
-def reduction(input_data, arr, start_ind, last_ind):
-	i = start_ind
-	side = -1
-	if start_ind == 0:
-		side = 1
+def reduction(input_data):
+	# initializing an array where the reduced data will be stored  
+	# the form: coefficient[power]	
+	reduced_arr = []
+	# finding positions of the equal sign and the end
+	last_ind = len(input_data) - 1
+	eq_ind = input_data.find('=')
+	i = 0
 	while i <= last_ind:
 		if input_data[i] == '^':
 			pow = int(input_data[i + 1])
-			val = side * get_coef(input_data, i)
-
-			# if the last power in the array is less than the current power 
-			# we fill the empty positions with nulls
-			if pow > len(arr) - 1:
-				append_ind(arr, pow, len(arr) - 1, val)
-			else:
-				arr[pow] += val
+			val = get_coef(input_data, i)
+			if i > eq_ind:
+				val = - 1 * val
+			add_coef(reduced_arr, pow, val)
 		i += 1
-	return arr
+	return reduced_arr
 
-# printing the reduced equation to the screen
+# printing the reduced equation to the screen based on reduced array
 def print_reduced(arr, max_pow):
 	i = 0
 	text = ""
@@ -80,37 +62,16 @@ def print_reduced(arr, max_pow):
 	text += " = 0"
 	print("Reduced form:", text.strip())
 
-def pow2(n):
-	return n*n
-
-
-def square_root(n):
-	if n == 1:
-		return 1
-	if n > 1:
-		min = 0
-		max = n
-	else:
-		min = n
-		max = 1
-	candidate = min + (max - min)/2
-	temp_pow = pow2(candidate)
-	while (temp_pow != n):
-		if temp_pow > n:
-			max = candidate;
-		else:
-			min = candidate;
-		old_candidate = candidate
-		candidate = min + (max - min)/2
-		if candidate == old_candidate:
-			return candidate
-		temp_pow = pow2(candidate)
-	return candidate
-
-
+def getDegree(arr):
+	length = len(arr)
+	last_ind = length - 1
+	while last_ind > 0 and arr[last_ind] == 0: 
+		last_ind -= 1
+	return last_ind
+  
 def solution(arr, degree):
 	if degree == 2:
-		D = pow(arr[1], 2) - 4*arr[2]*arr[0]
+		D = pow2(arr[1]) - 4*arr[2]*arr[0]
 		if D > 0:
 			D_root = square_root(D)
 			s1 = (-arr[1] + D_root)/(2*arr[2])
