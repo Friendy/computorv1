@@ -1,0 +1,112 @@
+import re, sys
+from enum import IntEnum
+class InputError(Exception):
+    pass
+class Types(IntEnum):
+    FIRST = 1
+    MULT = 0
+
+#  a * x^p
+# term pattern
+# returns next pos after the term
+def sign_check(input, type):
+    end = 3
+    if type == Types.FIRST:
+        sign_pattern = r'^(\-\s)$'
+        end = 2
+    elif type == Types.MULT:
+        sign_pattern = r'^\s\*\s$'
+    else:
+        sign_pattern = r'^\s[\+,\-,\=]\s$'
+    try:
+        x = re.search(sign_pattern, input[:end])
+        if x:
+            return x.span()[1]
+        else:
+            if type == Types.FIRST:
+                return 0 
+            # raise InputError("The polinomial should start either with the minus operator \"-\" or with a number")
+            elif type == Types.MULT:
+                raise InputError("A coefficient should be followed by the multiplication operator surrounded with spaces\' * \'")
+            else:
+                raise InputError("Any term of the polinomial except for the first term should be preceeded by one of the following operators. An operator should be preceeded and followed by space")
+    except InputError as e:
+            print(f"Error: {e}")
+            printc("...", input[0], input[1:])
+            exit(-1)
+
+def check_coeff(input):
+   pattern = r'^(0|[1-9]\d*)(\.\d*[1-9])?'
+   x = re.search(pattern, input)
+   print("coef", x)
+   if x:    
+    return x.span()[1]
+   else:
+        try:
+            raise InputError("a coefficient is an integer or a float number. \n It should have no leading or trailing meaningless zeros , that is: 00.05600 should be replaced with 0.056")
+        except InputError as e:
+            print(f"Error: {e}")
+            printc("...", input[0], input[1:])
+            exit(-1)
+
+
+def check_xpower(input):
+    pattern = r'^X\^(0|[1-9]\d*)'
+    x = re.search(pattern, input)
+    # print("power", x)
+    if x:    
+        return x.span()[1]
+    else:
+        try:
+            raise InputError("the indeterminant is X \"X^p\"")
+        except InputError as e:
+            print(f"Error: {e}")
+            exit(-1)
+    # the indeterminant is X "X^p"
+def term_check(term, type):
+    # try:
+    print("term", term)
+    i = sign_check(term, type)
+    # except:
+    #     printc("", term, "")
+    #     exit(-1)
+    print("i", i)
+    i += check_coeff(term[i:])
+    print("type", Types.MULT)
+    i += sign_check(term[i:], Types.MULT)
+    i += check_xpower(term[i:])
+    return i
+
+# print('\x1b[6;30;41m' + 'Success!' + '\x1b[0m')
+def printc(start, colored, end):
+    print(f"{start}{'\x1b[6;30;41m'}{colored}{'\x1b[0m'}{end}")
+
+# def printc(start, colored, end):
+#     print(f"{start}{'\033[91m\033[4m\033[1m'}{colored}{'\033[0m'}{end}")
+
+# 2 parts seperated by eq, 
+# each part consists of terms 
+# each term starts with number, then multiplication sign then x hat pow
+# input starts whith a term or a minus
+# only one eq sign and at least one term after it
+
+def input_check(input):
+    try:
+        if input.count("=") != 1:
+            raise InputError("no or more than one eqal signs")
+        x = re.search(r'[^X\*\-\=\+\^\s\.\d]', input)
+        print("inpu", x)
+        
+        # print(f"{'\033[91m'} inpu {'\033[0m'}", x.span()[0])
+        if x:
+            pos = x.span()[0]
+            printc(input[0:pos], input[pos], input[pos + 1:])
+            raise InputError("the input contains forbidden character, allowed characters: all digits, space, *, -, +, =, ^, .")
+    except InputError as e:
+            print(f"Error: {e}")
+            sys.exit(-1)
+    # i = term_check(input, Types.FIRST)
+    i = 0
+    end = len(input) - 1
+    while i <= end:
+        i += term_check(input[i:], i + 1)

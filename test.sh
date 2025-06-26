@@ -9,3 +9,4 @@ python3 computor.py "- 5 * X^0 - 4 * X^1 = 4 * X^0"
 echo "*****ZERO TESTS*******"
 python3 computor.py "1 * X^0 - 0 * X^1 = 0 * X^0"
 python3 computor.py "0 * X^0 - 0 * X^1 = 0 * X^0"
+# input errors: sign check, check coef, check x power, input check
