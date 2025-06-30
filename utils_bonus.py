@@ -1,112 +1,83 @@
 import re, sys
-from enum import IntEnum
-class InputError(Exception):
-    pass
-class Types(IntEnum):
-    FIRST = 1
-    MULT = 0
+from utils import pow2, square_root, round6
+# from utils_bonus import reduce_fraction
 
-#  a * x^p
-# term pattern
-# returns next pos after the term
-def sign_check(input, type):
-    end = 3
-    if type == Types.FIRST:
-        sign_pattern = r'^(\-\s)$'
-        end = 2
-    elif type == Types.MULT:
-        sign_pattern = r'^\s\*\s$'
-    else:
-        sign_pattern = r'^\s[\+,\-,\=]\s$'
-    try:
-        x = re.search(sign_pattern, input[:end])
-        if x:
-            return x.span()[1]
-        else:
-            if type == Types.FIRST:
-                return 0 
-            # raise InputError("The polinomial should start either with the minus operator \"-\" or with a number")
-            elif type == Types.MULT:
-                raise InputError("A coefficient should be followed by the multiplication operator surrounded with spaces\' * \'")
-            else:
-                raise InputError("Any term of the polinomial except for the first term should be preceeded by one of the following operators. An operator should be preceeded and followed by space")
-    except InputError as e:
-            print(f"Error: {e}")
-            printc("...", input[0], input[1:])
-            exit(-1)
-
-def check_coeff(input):
-   pattern = r'^(0|[1-9]\d*)(\.\d*[1-9])?'
-   x = re.search(pattern, input)
-   print("coef", x)
-   if x:    
-    return x.span()[1]
-   else:
-        try:
-            raise InputError("a coefficient is an integer or a float number. \n It should have no leading or trailing meaningless zeros , that is: 00.05600 should be replaced with 0.056")
-        except InputError as e:
-            print(f"Error: {e}")
-            printc("...", input[0], input[1:])
-            exit(-1)
-
-
-def check_xpower(input):
-    pattern = r'^X\^(0|[1-9]\d*)'
-    x = re.search(pattern, input)
-    # print("power", x)
-    if x:    
-        return x.span()[1]
-    else:
-        try:
-            raise InputError("the indeterminant is X \"X^p\"")
-        except InputError as e:
-            print(f"Error: {e}")
-            exit(-1)
-    # the indeterminant is X "X^p"
-def term_check(term, type):
-    # try:
-    print("term", term)
-    i = sign_check(term, type)
-    # except:
-    #     printc("", term, "")
-    #     exit(-1)
-    print("i", i)
-    i += check_coeff(term[i:])
-    print("type", Types.MULT)
-    i += sign_check(term[i:], Types.MULT)
-    i += check_xpower(term[i:])
-    return i
-
-# print('\x1b[6;30;41m' + 'Success!' + '\x1b[0m')
 def printc(start, colored, end):
     print(f"{start}{'\x1b[6;30;41m'}{colored}{'\x1b[0m'}{end}")
+	
+def isdenominator(candidate, n):
+	r = n/candidate
+	return abs((r) - int(r)) == 0
 
-# def printc(start, colored, end):
-#     print(f"{start}{'\033[91m\033[4m\033[1m'}{colored}{'\033[0m'}{end}")
+def reduce_fraction(numerator, denominator):
+	# print(f" start {numerator}, {denominator}")
+	if abs(numerator) > abs(denominator):
+		max = int(denominator)
+	else:
+		max = int(numerator)
+	d = 2
+	while d <= abs(max):
+		while isdenominator(d, numerator) and isdenominator(d, denominator):
+			numerator = numerator/d
+			denominator = denominator/d
+		d += 1
+	# print(f" reduce {numerator}, {denominator}")
+	return (numerator, denominator)
 
-# 2 parts seperated by eq, 
-# each part consists of terms 
-# each term starts with number, then multiplication sign then x hat pow
-# input starts whith a term or a minus
-# only one eq sign and at least one term after it
-
-def input_check(input):
-    try:
-        if input.count("=") != 1:
-            raise InputError("no or more than one eqal signs")
-        x = re.search(r'[^X\*\-\=\+\^\s\.\d]', input)
-        print("inpu", x)
-        
-        # print(f"{'\033[91m'} inpu {'\033[0m'}", x.span()[0])
-        if x:
-            pos = x.span()[0]
-            printc(input[0:pos], input[pos], input[pos + 1:])
-            raise InputError("the input contains forbidden character, allowed characters: all digits, space, *, -, +, =, ^, .")
-    except InputError as e:
-            print(f"Error: {e}")
-            sys.exit(-1)
-    # i = term_check(input, Types.FIRST)
-    i = 0
-    end = len(input) - 1
-    while i <= end:
-        i += term_check(input[i:], i + 1)
+def print_fraction(numerator, denominator):
+	number = round6(numerator/denominator)
+	sign = ""
+	if number < 0:
+		sign = "-"
+	if abs(denominator) == 1:
+		print(f"{sign}{int(abs(numerator))}")
+	else:
+	    print(f"{sign}{int(abs(numerator))}/{int(abs(denominator))} ({number})")
+	
+def solution(arr, degree, steps):
+	if degree == 2:
+		D_term1 = pow2(arr[1])
+		D_term2 = - 4*arr[2]*arr[0]
+		D = D_term1 + D_term2
+		if steps == True:
+			sign = '+'
+			if D_term2 < 0:
+				sign = "-"
+			print(f"Discriminant: D = b^2 - 4ac = {arr[1]}^2 {sign} 4 * {abs(arr[2])} * {abs(arr[0])} = {round6(D)}")
+		if D > 0:
+			D_root = square_root(D)
+			# print(f"Discriminant: {round6(D)}")
+			if abs(D_root - int(D_root)) == 0: #fraction format
+				numerator1 = int(-arr[1] + D_root)
+				numerator2 = int(-arr[1] - D_root)
+				denominator = int(2*arr[2])
+				print("Discriminant is strictly positive, the two solutions are:")
+				(new_numerator, new_denominator) = reduce_fraction(numerator1, denominator)
+				print_fraction(new_numerator, new_denominator)
+				(new_numerator, new_denominator) = reduce_fraction(numerator2, denominator)
+				print_fraction(new_numerator, new_denominator)
+			else:
+				s1 = (-arr[1] + D_root)/(2*arr[2])
+				s2 = (-arr[1] - D_root)/(2*arr[2])
+				print("Discriminant is strictly positive, the two solutions are:", round6(s1), round6(s2), sep="\n")
+		elif D == 0:
+			print("Discriminant equals zero, the solution is:", round6(-arr[1]/2*arr[2]))
+			print(f"Fraction format:")
+			reduce_fraction(-arr[1], 2*arr[2])
+		else:
+			print("Discriminant is strictly negative, there is no real solution:")
+			D_root = square_root(-D)
+			# print("root", round6(D_root))
+			real = round6(-arr[1]/(2*arr[2]))
+			im = round6(D_root/(2*arr[2]))
+			print(f"Complex solutions:\n{real} + i * {im}\n{real} - i * {im}")
+	elif degree == 1:
+		print("The solution is:", -arr[0]/arr[1], sep="\n")
+	elif degree == 0:
+		if (arr[0] == 0):
+			print("Any real number is a solution")
+			reduce_fraction(-arr[1], 2*arr[2])
+		else:
+			print("This equation has no solutions")
+	else:
+		print("The polynomial degree is strictly greater than 2, I can't solve.")
