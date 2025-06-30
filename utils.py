@@ -1,6 +1,19 @@
 from operations import pow2, square_root, round6
 import time
 
+# 94 blue 95 purple 96 bright blue 91 red
+
+
+def print_colored(text, color, endline = "\n"):
+	match color:
+		case "green":
+			tag = '\033[92m'
+		case "red":
+			tag = '\x1b[6;37;47m'
+		case "blue":
+			tag = '\033[96m'
+	print(f"{tag}{text}{'\033[0m'}", end = endline)
+
 # adding coefficient to the array
 # appending nulls and the value to the array so that
 def  add_coef(arr, power, val):
@@ -60,7 +73,9 @@ def print_reduced(arr, max_pow):
 		text += str(cur_coef) + " * X^" + str(i)
 		i += 1
 	text += " = 0"
-	print("Reduced form:", text.strip())
+	print_colored("Reduced form:", "blue")
+	# print(f"{text.strip()}")
+	print_colored(text.strip(), "green")
 
 def getDegree(arr):
 	length = len(arr)
@@ -76,20 +91,23 @@ def solution(arr, degree):
 			D_root = square_root(D)
 			s1 = (-arr[1] + D_root)/(2*arr[2])
 			s2 = (-arr[1] - D_root)/(2*arr[2])
-			print("Discriminant is strictly positive, the two solutions are:", round6(s1), round6(s2), sep="\n")			
+			print_colored("Discriminant is strictly positive, the two solutions are:", "blue")
+			print_colored(f"{round6(s1)}\n{round6(s2)}", "green")
 		elif D == 0:
-			print("Discriminant equals zero, the solution is:", round6(-arr[1]/2*arr[2]))
+			print_colored("Discriminant equals zero, the solution is:", "blue")
+			print_colored(f"{round6(-arr[1]/2*arr[2])}", "green")
 		else:
-			print("Discriminant is strictly negative, there is no real solution:")
-	elif degree == 1:
-		print("The solution is:", -arr[0]/arr[1], sep="\n")
+			print_colored("Discriminant is strictly negative, there is no real solution:", "blue")
+	elif degree == 1: 
+		print_colored("The solution is:", "blue")
+		print_colored(f"{-arr[0]/arr[1]}", "green")
 	elif degree == 0:
 		if (arr[0] == 0):
-			print("Any real number is a solution")
+			print_colored("Any real number is a solution", "blue")
 		else:
-			print("This equation has no solutions")
+			print_colored("This equation has no solutions", "blue")
 	else:
-		print("The polynomial degree is strictly greater than 2, I can't solve.")
+		print_colored("The polynomial degree is strictly greater than 2, I can't solve.", "blue")
 		
 			
 

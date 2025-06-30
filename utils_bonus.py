@@ -2,8 +2,8 @@ import re, sys
 from utils import pow2, square_root, round6
 # from utils_bonus import reduce_fraction
 
-def printc(start, colored, end):
-    print(f"{start}{'\x1b[6;30;41m'}{colored}{'\x1b[0m'}{end}")
+def print_select(start, selection, end):
+    print(f"{start}{'\x1b[6;30;41m'}{selection}{'\x1b[0m'}{end}")
 	
 def isdenominator(candidate, n):
 	r = n/candidate

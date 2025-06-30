@@ -1,5 +1,5 @@
 import sys
-from utils import reduction, print_reduced, solution, getDegree
+from utils import reduction, print_reduced, solution, getDegree, print_colored
 
 # getting input
 if len(sys.argv) > 1:
@@ -18,5 +18,6 @@ reduced_array = reduction(input_data)
 
 degree = getDegree(reduced_array)
 print_reduced(reduced_array, degree)
-print("Polynomial degree:", degree)
+print_colored("Polynomial degree: ", "blue", "")
+print_colored(f"{degree}", "green")
 solution(reduced_array, degree)

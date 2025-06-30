@@ -1,6 +1,6 @@
 import re, sys
 from enum import IntEnum
-from utils_bonus import printc
+from utils_bonus import print_select
 class InputError(Exception):
     pass
 class Types(IntEnum):
@@ -36,9 +36,9 @@ def sign_check(input, type):
     except InputError as e:
             print(f"Error: {e}")
             if type == Types.FIRST:
-                printc("", input[0], input[1:])
+                print_select("", input[0], input[1:])
             else:
-                printc("...", input[0], input[1:])
+                print_select("...", input[0], input[1:])
             exit(-1)
 
 def check_coeff(input, type):
@@ -61,7 +61,7 @@ def check_coeff(input, type):
             if type == Types.FIRST:
                 start = ""
             if len(input) != 0:
-                printc(start, input[0], input[1:])
+                print_select(start, input[0], input[1:])
             print(f"Error: {e}")
             exit(-1)
 
@@ -82,14 +82,14 @@ def term_check(term, type):
     # try:
     i = sign_check(term, type)
     # except:
-    #     printc("", term, "")
+    #     print_select("", term, "")
     #     exit(-1)
     i += check_coeff(term[i:], type)
     i += sign_check(term[i:], Types.MULT)
     i += check_xpower(term[i:])
     return i
 
-# def printc(start, colored, end):
+# def print_select(start, colored, end):
 #     print(f"{start}{'\033[91m\033[4m\033[1m'}{colored}{'\033[0m'}{end}")
 
 # 2 parts seperated by eq, 
@@ -108,9 +108,9 @@ def input_check(input):
         # print(f"{'\033[91m'} inpu {'\033[0m'}", x.span()[0])
         if x:
             pos = x.span()[0]
-            printc(input[0:pos], input[pos], input[pos + 1:])
+            # print_select(input[0:pos], input[pos], input[pos + 1:])
             raise InputError("the input contains forbidden character, allowed characters: all digits, space, *, -, +, =, ^, .")
-    except InputError as e:
+    except InputError as e:  
             print(f"Error: {e}")
             sys.exit(-1)
     # i = term_check(input, Types.FIRST)

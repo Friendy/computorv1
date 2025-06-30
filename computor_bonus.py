@@ -1,5 +1,5 @@
 import sys
-from utils import reduction, print_reduced, getDegree
+from utils import reduction, print_reduced, getDegree, print_colored
 from utils_bonus import solution, reduce_fraction
 from checker import input_check
 
@@ -15,7 +15,9 @@ else:
 steps = False
 if len(sys.argv) > 2 and sys.argv[2] == "steps":
     steps = True
-# input_check(input_data)
+print_colored("fgfg", "red")
+input_check(input_data)
+
 # exit(-1)
 reduced_array = reduction(input_data)
 
