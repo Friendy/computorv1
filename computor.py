@@ -11,13 +11,13 @@ else:
         print(f"Error: {e}")
         exit(-1)
 
-reduced_array = reduction(input_data)
+reduced_list = reduction(input_data)
 
 # uncomment the next line if needed for debugging
-# print("reduced array: ", reduced_array)
+# print("reduced list: ", reduced_list)
 
-degree = getDegree(reduced_array)
-print_reduced(reduced_array, degree)
+degree = getDegree(reduced_list)
+print_reduced(reduced_list, degree)
 print_colored("Polynomial degree: ", "blue", "")
 print_colored(f"{degree}", "green")
-solution(reduced_array, degree)
+solution(reduced_list, degree)

@@ -15,16 +15,16 @@ else:
 steps = False
 if len(sys.argv) > 2 and sys.argv[2] == "steps":
     steps = True
-print_colored("fgfg", "red")
 input_check(input_data)
 
 # exit(-1)
-reduced_array = reduction(input_data)
+reduced_list = reduction(input_data)
 
 # uncomment the next line if needed for debugging
-# print("reduced array: ", reduced_array)
+# print("reduced list: ", reduced_list)
 
-degree = getDegree(reduced_array)
-print_reduced(reduced_array, degree)
-print("Polynomial degree:", degree)
-solution(reduced_array, degree, steps)
+degree = getDegree(reduced_list)
+print_reduced(reduced_list, degree)
+print_colored("Polynomial degree: ", "blue", "")
+print_colored(f"{degree}", "green")
+solution(reduced_list, degree, steps)

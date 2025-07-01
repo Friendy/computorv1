@@ -1,10 +1,10 @@
 import re, sys
-from utils import pow2, square_root, round6
+from utils import pow2, square_root, round6, print_colored, print_solution, Solutions
 # from utils_bonus import reduce_fraction
 
 def print_select(start, selection, end):
     print(f"{start}{'\x1b[6;30;41m'}{selection}{'\x1b[0m'}{end}")
-	
+
 def isdenominator(candidate, n):
 	r = n/candidate
 	return abs((r) - int(r)) == 0
@@ -30,53 +30,53 @@ def print_fraction(numerator, denominator):
 	if number < 0:
 		sign = "-"
 	if abs(denominator) == 1:
-		print(f"{sign}{int(abs(numerator))}")
+		print_colored(f"{sign}{int(abs(numerator))}", "green")
 	else:
-	    print(f"{sign}{int(abs(numerator))}/{int(abs(denominator))} ({number})")
-	
-def solution(arr, degree, steps):
+		print_colored(f"{sign}{int(abs(numerator))}/{int(abs(denominator))} ({number})", "green")
+
+def reduce_print(numerator, denominator):
+	(new_numerator, new_denominator) = reduce_fraction(int(numerator), int(denominator))
+	print_fraction(new_numerator, new_denominator)
+
+def solution(list, degree, steps):
 	if degree == 2:
-		D_term1 = pow2(arr[1])
-		D_term2 = - 4*arr[2]*arr[0]
+		D_term1 = pow2(list[1])
+		D_term2 = - 4*list[2]*list[0]
 		D = D_term1 + D_term2
 		if steps == True:
 			sign = '+'
 			if D_term2 < 0:
 				sign = "-"
-			print(f"Discriminant: D = b^2 - 4ac = {arr[1]}^2 {sign} 4 * {abs(arr[2])} * {abs(arr[0])} = {round6(D)}")
+			print(f"Discriminant: D = b^2 - 4ac = {list[1]}^2 {sign} 4 * {abs(list[2])} * {abs(list[0])} = {round6(D)}")
 		if D > 0:
 			D_root = square_root(D)
 			# print(f"Discriminant: {round6(D)}")
 			if abs(D_root - int(D_root)) == 0: #fraction format
-				numerator1 = int(-arr[1] + D_root)
-				numerator2 = int(-arr[1] - D_root)
-				denominator = int(2*arr[2])
-				print("Discriminant is strictly positive, the two solutions are:")
-				(new_numerator, new_denominator) = reduce_fraction(numerator1, denominator)
-				print_fraction(new_numerator, new_denominator)
-				(new_numerator, new_denominator) = reduce_fraction(numerator2, denominator)
-				print_fraction(new_numerator, new_denominator)
+				print_colored("Discriminant is strictly positive, the two solutions are:", "blue")
+				reduce_print(-list[1] + D_root, 2*list[2])
+				reduce_print(-list[1] - D_root, 2*list[2])
 			else:
-				s1 = (-arr[1] + D_root)/(2*arr[2])
-				s2 = (-arr[1] - D_root)/(2*arr[2])
-				print("Discriminant is strictly positive, the two solutions are:", round6(s1), round6(s2), sep="\n")
+				print_solution(Solutions.POSITIVE, ((-list[1] + D_root)/(2*list[2]), (-list[1] - D_root)/(2*list[2])))
 		elif D == 0:
-			print("Discriminant equals zero, the solution is:", round6(-arr[1]/2*arr[2]))
-			print(f"Fraction format:")
-			reduce_fraction(-arr[1], 2*arr[2])
+			(numerator, denominator) = reduce_fraction(-list[1], 2*list[2])
+			print(f"Discriminant equals zero, the solution is: {print_fraction(numerator, denominator)}")
 		else:
-			print("Discriminant is strictly negative, there is no real solution:")
+			print_colored("Discriminant is strictly negative, there is no real solution:", "blue")
 			D_root = square_root(-D)
 			# print("root", round6(D_root))
-			real = round6(-arr[1]/(2*arr[2]))
-			im = round6(D_root/(2*arr[2]))
-			print(f"Complex solutions:\n{real} + i * {im}\n{real} - i * {im}")
+			real = round6(-list[1]/(2*list[2]))
+			im = round6(D_root/(2*list[2]))
+			print_colored("Complex solutions:", "blue")
+			print_colored(f"{real} + i * {im}\n{real} - i * {im}","green")
+			# print(f"Complex solutions:\n{real} + i * {im}\n{real} - i * {im}")
 	elif degree == 1:
-		print("The solution is:", -arr[0]/arr[1], sep="\n")
+		(numerator, denominator) = reduce_fraction(-list[0],list[1])
+		print_colored(f"The solution is: ","blue")
+		print_fraction(numerator, denominator)
+		# reduce_fraction(-list[0],list[1])
 	elif degree == 0:
-		if (arr[0] == 0):
+		if (list[0] == 0):
 			print("Any real number is a solution")
-			reduce_fraction(-arr[1], 2*arr[2])
 		else:
 			print("This equation has no solutions")
 	else:
