@@ -27,9 +27,11 @@ def square_root(n):
 # rounds till 6 digits after the point
 def round6(n):
 	nString = str(abs(n))
-	point = nString.rfind(".")
+	point = nString.find(".")
 	# print("point", point, len(nString), nString)
 	if (len(nString) - point - 1) <= 7: # check !!!
+		if abs(int(n) - float(n)) == 0:
+			return int(n)
 		return n
 	digit = int(nString[point + 7])
 	nString = nString[:point + 7]
@@ -38,4 +40,4 @@ def round6(n):
 		result = result + 0.000001
 	if n < 0:
 		result = -result
-	return result 
+	return result
