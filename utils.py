@@ -15,10 +15,14 @@ def print_colored(text, color, endline = "\n"):
 		case "green":
 			tag = '\033[92m'
 		case "red":
-			tag = '\x1b[6;37;47m'
+			tag = '\033[91m'
 		case "blue":
 			tag = '\033[96m'
 		case "brown":
+			tag = '\033[93m'
+		case "purple":
+			tag = '\033[95m'
+		case "blue1":
 			tag = '\033[97m'
 	print(f"{tag}{text}{'\033[0m'}", end = endline)
 

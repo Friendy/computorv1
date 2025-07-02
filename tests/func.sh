@@ -14,3 +14,8 @@ name=$(printf "$format" "*" "$upper" "*")
 echo -e "\033[0;32m$name\033[0m"
 echo -e "\033[0;32m*******************************\033[0m"
 }
+
+run_code(){
+	print_input "$2"
+	python "$1" "$2"
+}
