@@ -1,5 +1,4 @@
 from operations import pow2, square_root, round6
-import time
 from enum import IntEnum
 
 class Solutions(IntEnum):
@@ -7,8 +6,6 @@ class Solutions(IntEnum):
 	POSITIVE = 1
 	NEGATIVE = -1
 	POWER1 = 2
-
-# 94 blue 95 purple 96 bright blue 91 red
 
 def print_colored(text, color, endline = "\n"):
 	match color:
@@ -23,7 +20,7 @@ def print_colored(text, color, endline = "\n"):
 		case "purple":
 			tag = '\033[95m'
 		case "blue1":
-			tag = '\033[97m'
+			tag = '\033[94m'
 	print(f"{tag}{text}{'\033[0m'}", end = endline)
 
 # adding coefficient to the list

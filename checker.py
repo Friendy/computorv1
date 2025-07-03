@@ -1,77 +1,6 @@
-import re, sys, textwrap
-from enum import IntEnum
-from utils_bonus import print_select
-from utils import print_colored
-class InputError(Exception):
-	pass
+import re, sys
+from error import Types, ErrorTypes, InputError, print_error, raise_input_error, raise_sign_error
 
-class Types(IntEnum):
-	FIRST = 1
-	MULT = 0
-	EQUAL = -1
-	ALL = 3
-	RIGHT = 4
-
-class ErrorTypes(IntEnum):
-	COEF_MISSING = 100
-	COEFF_SPACE_MISSING = 101
-	COEF_FORMAT = 102
-	INDETERMINATE = 103
-	FORBIDDEN = 104
-	EQUAL_SIGN_COUNT = 105
-
-def raise_sign_error(type):
-	match type:
-		case Types.FIRST | Types.RIGHT:
-			text = "The first term on the left side or the right side (after the equal sign) of the polinomial should start either with a minus, followed by a space: \"- \" or with a number"
-		case Types.MULT:
-			text = "A coefficient should be followed by the multiplication operator surrounded with spaces:\' * \'"
-		case Types.EQUAL:
-			text = "An equal sign should be surrounded with spaces \' = \'"
-		case _:
-			text = "Any term of the polinomial, except for the first term on the left/right side should be preceeded by a plus or a minus surrounded with spaces \" - \", \" + \"."
-	wrapped_text = textwrap.fill(text, 70)
-	raise InputError(wrapped_text)
-
-def raise_input_error(type):
-	match type:
-		case ErrorTypes.COEF_MISSING:
-			text = "A coefficient might be missing"
-		case ErrorTypes.COEFF_SPACE_MISSING:
-			text = "A space after the coefficient might be missing"
-		case ErrorTypes.COEF_FORMAT:
-			text = "A coefficient has a wrong format or a space after it is missing."
-		case ErrorTypes.INDETERMINATE:
-			text = "The indeterminant part has the \"X^p\" format, where X is imdeterminant"
-		case ErrorTypes.FORBIDDEN:
-			text = "The input contains a forbidden character. Allowed characters: all digits, space, *, -, +, =, ^, ."
-		case ErrorTypes.EQUAL_SIGN_COUNT:
-			text = "The polinomial has no or more than one eqal signs"
-	wrapped_text = textwrap.fill(text, 70)
-	raise InputError(wrapped_text)
-
-def print_error(error, input, start):
-	print_colored("Error: ", "red", endline="")
-	print_colored(error, "blue")
-	if input:
-		if start == Types.FIRST:
-			print_select("", input[0], input[1:])
-		else:
-			print_select("...", input[0], input[1:])
-
-def print_tip(type):
-	match type:
-		case ErrorTypes.COEF_MISSING:
-			text = "A coefficient might be missing"
-		case ErrorTypes.COEFF_SPACE_MISSING:
-			text = "A space after the coefficient might be missing"
-		case ErrorTypes.COEF_FORMAT :
-			text = "A coefficient is an integer or a float number. It should have no leading zeros, that is: 00.056 should be replaced with 0.056"
-		# case ErrorTypes.:
-		# 	text = "Any term of the polinomial except for the first term should be preceeded by one of the following operators. An operator should be preceeded and followed by space"
-	wrapped_text = textwrap.fill(text, 70)
-	print_colored("Tip: ", "purple", endline="")
-	print_colored(wrapped_text, "purple")
 #  a * x^p
 # term pattern
 # returns next pos after the term
@@ -119,10 +48,8 @@ def check_coeff(input, type):
 		else:
 			raise_input_error(ErrorTypes.COEF_FORMAT)
 	except InputError as e:
-			print_tip(ErrorTypes.COEF_FORMAT)
 			print_error(e, input, type)
 			exit(-1)
-
 
 def check_xpower(input):
 	pattern = r'^X\^(0|[1-9]\d*)'
@@ -143,9 +70,6 @@ def term_check(term, type):
 	i += sign_check(term[i:], Types.MULT)
 	i += check_xpower(term[i:])
 	return i
-
-# def print_select(start, colored, end):
-#     print(f"{start}{'\033[91m\033[4m\033[1m'}{colored}{'\033[0m'}{end}")
 
 # 2 parts seperated by eq, 
 # each part consists of terms 

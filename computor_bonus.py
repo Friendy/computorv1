@@ -1,20 +1,23 @@
 import sys
 from utils import reduction, print_reduced, getDegree, print_colored
-from utils_bonus import solution, reduce_fraction
+from utils_bonus import solution, reduce_fraction, print_help
 from checker import input_check
+from error import print_error
 
 # getting input
 if len(sys.argv) > 1:
-    input_data = sys.argv[1]
+	input_data = sys.argv[1]
+	if input_data == "h":
+		print_help()
 else:
-    try:
-        raise Exception("No or empty argument")
-    except Exception as e:
-        print(f"Error: {e}")
-        exit(-1)
+	try:
+		raise Exception("No or empty argument. Read README.md")
+	except Exception as e:
+		print_error(e, "", 3)
+		exit(-1)
 steps = False
 if len(sys.argv) > 2 and sys.argv[2] == "steps":
-    steps = True
+	steps = True
 input_check(input_data)
 
 # exit(-1)

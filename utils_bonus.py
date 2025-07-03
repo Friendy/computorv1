@@ -1,10 +1,18 @@
 import re, sys
 from utils import pow2, square_root, round6, print_colored, print_solution, Solutions
-# from utils_bonus import reduce_fraction
 
 def print_select(start, selection, end):
 	if selection:
 		print(f"{start}{'\x1b[6;30;41m'}{selection}{'\x1b[0m'}{end}")
+
+def print_help():
+	coef_format = "A coefficient is an integer or a float. It should have no leading zeros\nexcept for a single zero before the float point, for example: 00.056 should be replaced\nwith 0.056"
+	print_colored("HELP:", "brown")
+	print_colored("Term format: ", "purple", endline="")
+	print_colored("n * X^p, where n is the coefficient, X - the indeterminate, p - power", "blue")
+	print_colored("Coefficient: ", "purple", endline="")
+	print_colored(coef_format, "blue")
+	exit()
 
 def isdenominator(candidate, n):
 	r = n/candidate
@@ -39,6 +47,21 @@ def reduce_print(numerator, denominator):
 	(new_numerator, new_denominator) = reduce_fraction(int(numerator), int(denominator))
 	print_fraction(new_numerator, new_denominator)
 
+def print_solution_steps(type, list, D_root):
+	match type:
+		case Solutions.POSITIVE:
+			text = "Discriminant is strictly positive, the two solutions are:"
+		case Solutions.ZERO:
+			text = "Discriminant equals zero, the solution is:"
+		case Solutions.POWER1:
+			text = "The solution is:"
+	print_colored(text, "blue")
+	if type == Solutions.POSITIVE:
+		print_colored(f"={round6(sol_tuple[0])}\n{round6(sol_tuple[1])}", "green")
+		print_colored(f"- b + D^1/2\/2a")
+	else:
+		print_colored(f"{round6(sol_tuple)}", "green")
+
 def solution(list, degree, steps):
 	if degree == 2:
 		D_term1 = pow2(list[1])
@@ -48,7 +71,8 @@ def solution(list, degree, steps):
 			sign = '+'
 			if D_term2 < 0:
 				sign = "-"
-			print(f"Discriminant: D = b^2 - 4ac = {list[1]}^2 {sign} 4 * {abs(list[2])} * {abs(list[0])} = {round6(D)}")
+			print_colored(f"Discriminant: ", "purple", endline="")
+			print_colored(f"D = b^2 - 4ac = {list[1]}^2 {sign} 4 * {abs(list[2])} * {abs(list[0])} = {D_term1} + {D_term2}  = {round6(D)}", "purple")
 		if D > 0:
 			D_root = square_root(D)
 			# print(f"Discriminant: {round6(D)}")
@@ -68,7 +92,7 @@ def solution(list, degree, steps):
 			real = round6(-list[1]/(2*list[2]))
 			im = round6(D_root/(2*list[2]))
 			print_colored("Complex solutions:", "blue")
-			print_colored(f"{real} + i * {im}\n{real} - i * {im}","green")
+			print_colored(f"{real} + i * {abs(im)}\n{real} - i * {abs(im)}","green")
 			# print(f"Complex solutions:\n{real} + i * {im}\n{real} - i * {im}")
 	elif degree == 1:
 		(numerator, denominator) = reduce_fraction(-list[0],list[1])
@@ -77,8 +101,8 @@ def solution(list, degree, steps):
 		# reduce_fraction(-list[0],list[1])
 	elif degree == 0:
 		if (list[0] == 0):
-			print("Any real number is a solution")
+			print_colored("Any real number is a solution", "blue")
 		else:
-			print("This equation has no solutions")
+			print_colored("This equation has no solutions", "blue")
 	else:
-		print("The polynomial degree is strictly greater than 2, I can't solve.")
+		print_colored("The polynomial degree is strictly greater than 2, I can't solve.", "blue")
