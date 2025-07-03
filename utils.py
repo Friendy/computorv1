@@ -117,7 +117,7 @@ def solution(list, degree):
 			D_root = square_root(D)
 			print_solution(Solutions.POSITIVE, ((-list[1] + D_root)/(2*list[2]), (-list[1] - D_root)/(2*list[2])))
 		elif D == 0:
-			print_solution(Solutions.ZERO, (-list[1]/2*list[2]))
+			print_solution(Solutions.ZERO, (-list[1]/(2*list[2])))
 		else:
 			print_colored("Discriminant is strictly negative, there is no real solution:", "blue")
 	elif degree == 1:
