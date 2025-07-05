@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # FILE_PATH="$DIR/../computor.py"
-# FILE_PATH_BONUS="$DIR/../computor_bonus.py"
+# FILE_PATH_BONUS="$DIR/../computor.py"
 
 print_input(){
 	echo -e "\033[0;33mInput:\033[0m" "\033[0;33m$1\033[0m"
@@ -23,9 +23,9 @@ run_code(){
 	print_input "$2"
 	if [[ $3 = "steps" ]]
 	then
-		python "$1" "$2" "$3"
+		python -m "$1" "$2" "$3"
 	else
-		python "$1" "$2"
+		python -m "$1" "$2"
 	fi
 }
 
