@@ -15,7 +15,6 @@ def steps_positive(list, D_root, numerator, sign):
 	step1 = f"({round6(-list[1])} {sign} {(round6(D_root))})/(2 * {round6(list[2])})"
 	step2 = f"{numerator}/{round6(2*list[2])}"
 	result = f"{round6(numerator/round6(2*list[2]))}"
-	# print("ghfgfh", round6(numerator/2))
 	if is_int(D_root) or is_int(numerator):
 		fraction_str = get_fraction_string(numerator, (2*list[2]))[0]
 		if result == fraction_str or step2 == fraction_str:#result is integer or the fraction is irreducible

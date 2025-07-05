@@ -90,8 +90,7 @@ def print_reduced(list, max_pow):
 	print_colored(text.strip(), "green")
 
 def getDegree(list):
-	length = len(list)
-	last_ind = length - 1
+	last_ind = len(list) - 1
 	while last_ind > 0 and list[last_ind] == 0:
 		last_ind -= 1
 	return last_ind

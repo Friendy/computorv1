@@ -6,7 +6,6 @@ from .error import Types, ErrorTypes, InputError, print_error, raise_input_error
 # returns next pos after the term
 def sign_check(input, type):
 	end = 3
-	# print(input)
 	match type:
 		case Types.FIRST | Types.RIGHT:
 			sign_pattern = r'^(\-\s)$'
@@ -98,8 +97,6 @@ def input_check(input):
 	while i < eq_ind - 1:
 		i += term_check(input[i:], i + 1)
 	i += sign_check(input[i:], Types.EQUAL)
-	# print("i", i)
 	i += term_check(input[i:], Types.RIGHT)
-	# print("i after chck", i)
 	while i <= end:
 		i += term_check(input[i:], Types.ALL)

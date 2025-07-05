@@ -2,14 +2,15 @@ import sys
 from .utils import reduction, print_reduced, solution, getDegree, print_colored
 
 # getting input
-if len(sys.argv) > 1:
-    input_data = sys.argv[1]
+if len(sys.argv) == 2:
+	input_data = sys.argv[1]
 else:
-    try:
-        raise Exception("No or empty argument")
-    except Exception as e:
-        print(f"Error: {e}")
-        exit(-1)
+	try:
+		raise Exception("No, empty, or extra argument")
+	except Exception as e:
+		print_colored("Error: ", "red", endline="")
+		print_colored(e, "blue")
+		exit(-1)
 
 reduced_list = reduction(input_data)
 

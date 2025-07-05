@@ -21,11 +21,7 @@ if len(sys.argv) > 2 and sys.argv[2] == "steps":
 	steps = True
 input_check(input_data)
 
-# exit(-1)
 reduced_list = reduction(input_data)
-
-# uncomment the next line if needed for debugging
-# print("reduced list: ", reduced_list)
 
 degree = getDegree(reduced_list)
 print_reduced(reduced_list, degree)

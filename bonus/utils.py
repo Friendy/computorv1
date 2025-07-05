@@ -58,7 +58,6 @@ def solution(list, degree, steps):
 			im = round6(D_root/(2*list[2]))
 			print_colored("Complex solutions:", "blue")
 			print_colored(f"{real} + i * {abs(im)}\n{real} - i * {abs(im)}","green")
-			# print(f"Complex solutions:\n{real} + i * {im}\n{real} - i * {im}")
 	elif degree == 1:
 		if steps:
 			print_solution_steps(Solutions.DEGREE1, list, 0)

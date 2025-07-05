@@ -1,5 +1,12 @@
 # computorv1
 
+*****************************************
+*		Create Virtual Environment		*
+*****************************************
+brew install python - if python3 is not installed on mac
+python3 -m venv .venv
+source .venv/bin/activate
+
 *********************************
 *		Mandatory Part			*
 *********************************
@@ -23,6 +30,5 @@ python -m bonus.computor h
 ./run.sh steps -  bonus intermediate steps tests
 
 
-python -m bonus.computor "5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0" steps
 Solving quadratic equations online
 https://www.calculator.net/quadratic-formula-calculator.html

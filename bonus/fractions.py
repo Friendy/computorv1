@@ -4,10 +4,9 @@ from main.operations import is_int
 
 def isdenominator(candidate, n):
 	r = n/candidate
-	return abs((r) - int(r)) == 0
+	return is_int(r)
 
 def reduce_fraction(numerator, denominator):
-	# print(f" start {numerator}, {denominator}")
 	if abs(numerator) > abs(denominator):
 		max = int(denominator)
 	else:
@@ -18,7 +17,6 @@ def reduce_fraction(numerator, denominator):
 			numerator = numerator/d
 			denominator = denominator/d
 		d += 1
-	# print(f" reduce {numerator}, {denominator}")
 	return (numerator, denominator)
 
 # prints a fraction and its decimal version if it does not reduce to integer

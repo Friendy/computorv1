@@ -30,7 +30,7 @@ def is_int(n):
 def round6(n):
 	nString = str(abs(n))
 	point = nString.find(".")
-	if (len(nString) - point - 1) < 7: # check !!!
+	if (len(nString) - point - 1) < 7:
 		if is_int(n):
 			return int(n)
 		return n
