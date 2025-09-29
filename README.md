@@ -1,5 +1,5 @@
 # computorv1
-This is the docker version, for the non-docker version go to [here](https://github.com/Friendy/computorv1/tree/master) or select the master branch on github.
+This is the docker version, for the non-docker version go to [here](https://github.com/Friendy/computorv1/tree/master) or select the master branch in this repo.
 This app displays the reduced form of a polinomial and finds its roots,
 if its degree is 2 or less.
 
